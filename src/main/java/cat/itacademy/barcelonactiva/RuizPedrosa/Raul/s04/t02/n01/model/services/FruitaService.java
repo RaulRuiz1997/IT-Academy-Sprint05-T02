@@ -1,39 +1,43 @@
 package cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.services;
 
-import cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.Fruita;
+import cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.domain.Fruita;
 import cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.repository.FruitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
-public class FruitaService {
+public class FruitaService implements FruitaInterface {
 
     @Autowired
     FruitaRepository fruitaRepository;
 
     // POST
-    public Fruita afegirFruita(Fruita fruita) {
-        return fruitaRepository.save(fruita);
+    @Override
+    public ResponseEntity<Fruita> afegirFruita(Fruita fruita) {
+        return new ResponseEntity<>(fruitaRepository.save(fruita), HttpStatus.OK);
     }
 
     // PUT
-    public void modificarFruita(Fruita fruita) {
+    @Override
+    public ResponseEntity<Fruita> modificarFruita(Fruita fruita) {
 
         Fruita fruitaModificada = fruitaRepository.findById(fruita.getId()).get();
 
         fruitaModificada.setNom(fruita.getNom());
         fruitaModificada.setQuantitatQuilos(fruita.getQuantitatQuilos());
 
-        fruitaRepository.save(fruitaModificada);
+        return new ResponseEntity<>(fruitaRepository.save(fruitaModificada), HttpStatus.OK);
 
     }
 
     // PATCH
-    public void actualitzarFruita(Fruita fruita) {
+    @Override
+    public ResponseEntity<Fruita> actualitzarFruita(Fruita fruita) {
 
         Fruita fruitaModificada = fruitaRepository.findById(fruita.getId()).get();
 
@@ -45,16 +49,28 @@ public class FruitaService {
             fruitaModificada.setQuantitatQuilos(fruita.getQuantitatQuilos());
         }
 
-        fruitaRepository.save(fruitaModificada);
+        return new ResponseEntity<>(fruitaRepository.save(fruitaModificada), HttpStatus.OK);
 
     }
 
     // DELETE
-    public void borrarFruita(Integer id) {
+    @Override
+    public ResponseEntity<Fruita> borrarFruita(Integer id) {
+
+        Fruita fruitaBorrada = null;
+
+        if (fruitaRepository.findById(id).isPresent()) {
+            fruitaBorrada = fruitaRepository.findById(id).get();
+        }
+
         fruitaRepository.deleteById(id);
+
+        return new ResponseEntity<>(fruitaBorrada, HttpStatus.OK);
+
     }
 
     // GET
+    @Override
     public Fruita trobarFruitaPerId(Integer id) {
 
         if (fruitaRepository.findById(id).isPresent()) {
@@ -70,6 +86,7 @@ public class FruitaService {
     }
 
     // GET
+    @Override
     public List<Fruita> trobarTotesFruites() {
         return fruitaRepository.findAll();
     }

@@ -1,6 +1,7 @@
 package cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.controllers;
 
-import cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.Fruita;
+import cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.domain.Fruita;
+import cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.services.FruitaInterface;
 import cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.services.FruitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,32 +15,32 @@ import java.util.List;
 public class FruitaController {
 
     @Autowired
-    FruitaService fruitaService;
+    FruitaInterface fruitaService;
 
     // http://localhost:8080/fruita/add
     @PostMapping("/add")
-    public Fruita afegirFruita(@RequestBody Fruita fruita) {
+    public ResponseEntity<Fruita> afegirFruita(@RequestBody Fruita fruita) {
         return fruitaService.afegirFruita(fruita);
     }
 
     // http://localhost:8080/fruita/update
     // Método para todos los campos
     @PutMapping("/update")
-    public void modificarFruita(@RequestBody Fruita fruita) {
-        fruitaService.modificarFruita(fruita);
+    public ResponseEntity<Fruita> modificarFruita(@RequestBody Fruita fruita) {
+        return fruitaService.modificarFruita(fruita);
     }
 
     // http://localhost:8080/fruita/update
     // Método para cambiar 1 o mas de 1 campo
     @PatchMapping("/update")
-    public void actualitzarFruita(@RequestBody Fruita fruita) {
-        fruitaService.actualitzarFruita(fruita);
+    public ResponseEntity<Fruita> actualitzarFruita(@RequestBody Fruita fruita) {
+        return fruitaService.actualitzarFruita(fruita);
     }
 
     // http://localhost:8080/fruita/delete/{id}
     @DeleteMapping("/delete/{id}")
-    public void borrarFruita(@PathVariable Integer id) {
-        fruitaService.borrarFruita(id);
+    public ResponseEntity<Fruita> borrarFruita(@PathVariable Integer id) {
+        return fruitaService.borrarFruita(id);
     }
 
     // http://localhost:8080/fruita/getOne/{id}
@@ -50,8 +51,8 @@ public class FruitaController {
 
     // http://localhost:8080/fruita/getAll
     @GetMapping("/getAll")
-    public List<Fruita> trobarTotesFruites() {
-        return fruitaService.trobarTotesFruites();
+    public ResponseEntity<List<Fruita>> trobarTotesFruites() {
+        return new ResponseEntity<>(fruitaService.trobarTotesFruites(), HttpStatus.OK);
     }
 
 }

@@ -1,4 +1,4 @@
-package cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model;
+package cat.itacademy.barcelonactiva.RuizPedrosa.Raul.s04.t02.n01.model.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
